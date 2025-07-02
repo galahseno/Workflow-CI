@@ -3,8 +3,13 @@ channels:
   - defaults
 dependencies:
   - python=3.12
-  - pandas
-  - scikit-learn
-  - pip
+  - pip<=24.2
   - pip:
-      - mlflow==2.19.0
+    - dagshub==0.5.1
+    - mlflow==2.19.0
+    - cloudpickle==3.1.0
+    - numpy==2.2.1
+    - pandas==2.2.3
+    - psutil==5.9.0
+    - scikit-learn==1.6.0
+    - scipy==1.14.1
