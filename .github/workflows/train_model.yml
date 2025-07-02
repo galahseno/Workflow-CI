@@ -45,14 +45,12 @@ jobs:
         id: get_run
         working-directory: MLProject
         run: |
-          RUN_ID=$(python -c 'import mlflow; from mlflow.tracking import MlflowClient; client = MlflowClient(); exp = client.get_experiment_by_name("Cardiovascular_Classifier"); runs = client.search_runs([exp.experiment_id], order_by=["start_time DESC"], max_results=1); print(runs[0].info.run_id)')
-          echo "run_id=$RUN_ID" >> "$GITHUB_OUTPUT"
+            python get_run_id.py
 
       # ✅ Build Docker Image
       - name: Build Docker Model
         run: |
-            mlflow models build-docker --model-uri "runs://${{ steps.get_run.outputs.run_id }}/model" --name "cc"
-
+            mlflow models build-docker --model-uri "runs:/${{ steps.get_run.outputs.run_id }}/model" --name "cc"
 
       # ✅ Login to Docker Hub
       - name: Log in to Docker Hub
