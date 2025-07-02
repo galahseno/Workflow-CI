@@ -50,6 +50,7 @@ jobs:
       # ✅ Build Docker Image
       - name: Build Docker Model
         run: |
+            export MLFLOW_TRACKING_URI="file:///tmp/mlruns"
             mlflow models build-docker --model-uri "runs:/${{ steps.get_run.outputs.run_id }}/model" --name "cc"
 
       # ✅ Login to Docker Hub
