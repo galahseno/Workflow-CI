@@ -33,8 +33,6 @@ mlflow.set_experiment("Cardiovascular_Classifier")
 # 🚀 Train Model with autolog
 # ================================
 with mlflow.start_run():
-    mlflow.sklearn.autolog()
-
     model = RandomForestClassifier(random_state=42)
     model.fit(X_train, y_train)
 
