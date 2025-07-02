@@ -84,6 +84,9 @@ run_drive_folder = service.files().create(
 ).execute()
 run_drive_folder_id = run_drive_folder["id"]
 
+print("📦 Contents of artifact folder:")
+print(os.listdir(local_artifact_path))
+
 # 6. Upload local artifacts to Drive
 upload_directory(local_artifact_path, run_drive_folder_id)
 
