@@ -52,9 +52,10 @@ with mlflow.start_run():
     input_example = X_test
 
     mlflow.sklearn.log_model(
-        model,
-        name="model",
+        sk_model=model,
+        artifact_path="model",
         input_example=input_example
     )
+
 
 print("\n✅ Model training completed. Launch UI with: mlflow ui --backend-store-uri /tmp/mlruns")
