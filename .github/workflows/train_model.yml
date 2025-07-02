@@ -1,41 +1,39 @@
-name: 🚀 Train ML Model
+name: 🚀 Train and Upload to GDrive
 
 on:
   push:
-    branches:
-      - main
-  pull_request:
-    branches:
-      - main
+    branches: [main]
+  workflow_dispatch:
 
 jobs:
-  train:
+  train-and-upload:
     runs-on: ubuntu-latest
 
+    env:
+      GDRIVE_CREDENTIALS: ${{ secrets.GDRIVE_CREDENTIALS }}
+      GDRIVE_FOLDER_ID: ${{ secrets.GDRIVE_FOLDER_ID }}
+
     steps:
-      - name: 📥 Checkout Code
+      - name: 📥 Checkout Repository
         uses: actions/checkout@v3
 
-      - name: 🐍 Set up Python
+      - name: 🐍 Setup Python
         uses: actions/setup-python@v4
         with:
           python-version: '3.12'
 
-      - name: 📦 Install Conda & Setup Environment
-        uses: conda-incubator/setup-miniconda@v2
-        with:
-          environment-file: MLProject/conda.yaml
-          activate-environment: mlflow_env
-          auto-activate-base: false
-
-      - name: 🚀 Run Model Training
-        shell: bash -l {0}
+      - name: 📦 Install Dependencies
         run: |
-          cd MLProject
+          python -m pip install --upgrade pip
+          pip install -r MLProject/requirements.txt
+          pip install google-api-python-client google-auth google-auth-oauthlib google-auth-httplib2
+
+      - name: 🧠 Train ML Model with MLflow
+        working-directory: MLProject
+        run: |
           python modelling.py
 
-      - name: 📤 Upload Artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: trained-model-artifacts
-          path: /tmp/mlruns
+      - name: ☁️ Upload MLflow Artifacts to Google Drive
+        working-directory: MLProject
+        run: |
+          python upload_to_gdrive.py
