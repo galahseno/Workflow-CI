@@ -1,0 +1,10 @@
+name: mlflow_env
+channels:
+  - defaults
+dependencies:
+  - python=3.12
+  - pandas
+  - scikit-learn
+  - pip
+  - pip:
+      - mlflow==2.19.0
